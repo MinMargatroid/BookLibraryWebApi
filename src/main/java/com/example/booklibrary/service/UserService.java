@@ -1,7 +1,7 @@
 package com.example.booklibrary.service;
 
 import com.example.booklibrary.entities.User;
-import com.example.booklibrary.exceptions.BookNotFoundException;
+import com.example.booklibrary.exceptions.UserNotFoundException;
 import com.example.booklibrary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class UserService {
 
     public User getUserById(UUID id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("No book found with ID: " + id));
+                .orElseThrow(() -> new UserNotFoundException("No user found with ID: " + id));
     }
 
     public void deleteUser(UUID id) {

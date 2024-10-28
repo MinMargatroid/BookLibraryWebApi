@@ -1,12 +1,10 @@
 package com.example.booklibrary.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import java.util.UUID;
 import lombok.Data;
+import java.util.List;
+
 
 @Entity
 @Data
@@ -20,4 +18,9 @@ public class Book {
     private String author;
     private Double price;
     private String owner;
+
+    @ElementCollection // Specifies that this is a collection of simple types
+    @CollectionTable(name = "book_images", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "image_uuid") // Column name for the UUIDs
+    private List<UUID> imageUuids;
 }
