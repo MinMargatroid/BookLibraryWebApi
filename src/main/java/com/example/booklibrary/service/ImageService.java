@@ -1,5 +1,8 @@
 package com.example.booklibrary.service;
+import com.example.booklibrary.entities.Book;
 import com.example.booklibrary.entities.Image;
+import com.example.booklibrary.exceptions.BookNotFoundException;
+import com.example.booklibrary.exceptions.ImageNotFoundException;
 import com.example.booklibrary.repository.ImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +57,17 @@ public class ImageService {
         image.setS3Url(s3Url);
 
         return imageRepository.save(image);
+    }
+
+    public Image updateImage(String id, Image updatedImage) {
+        return imageRepository.findById(id)
+                .map(image -> {
+                    image.setFileName(updatedImage.getFileName());
+                    image.setFileType(updatedImage.getFileType());
+                    image.setS3Url(updatedImage.getS3Url());
+                    return imageRepository.save(image);
+                })
+                .orElseThrow(() -> new ImageNotFoundException("No image found with ID: " + id));
     }
 
     public Image getImageByUuid(String uuid) {

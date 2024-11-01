@@ -48,5 +48,22 @@ public class ImageController {
             throw new BookNotFoundException("Book UUID not found: " + book_uuid);
         }
     }
+
+    //need update images
+    @PutMapping("/{image_uuid}")
+    public Image updateImage(@PathVariable UUID book_uuid, @PathVariable String image_uuid, @RequestBody Image updatedImage) {
+        Book book = bookService.getBookById(book_uuid);
+        if (book != null) {
+            List<String> imageUuids = book.getImageUuids();
+            if (imageUuids.contains(image_uuid)) {
+                return imageService.updateImage(image_uuid, updatedImage);
+            } else {
+                throw new ImageNotFoundException("Image UUID not found: " + image_uuid);
+            }
+        } else {
+            throw new BookNotFoundException("Book UUID not found: " + book_uuid);
+        }
+
+    }
 }
 
