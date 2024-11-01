@@ -25,19 +25,15 @@ public class ImageController {
     private BookService bookService;
 
     @GetMapping("/{image_uuid}")
-    public ResponseEntity<String> getImageByUuid(@PathVariable UUID book_uuid, @PathVariable String image_uuid) {
+    public ResponseEntity<Image> getImageByUuid(@PathVariable UUID book_uuid, @PathVariable String image_uuid) {
         Book book = bookService.getBookById(book_uuid);
         if (book != null) {
             List<String> imageUuids = book.getImageUuids();
             if (imageUuids.contains(image_uuid)) {
                 Image image = imageService.getImageByUuid(image_uuid);
-                //System.out.println(image_uuid);
-                //System.out.println("*************");
-                //System.out.println(image_uuid.toString());
-                //System.out.println("*************");
                 if (image != null) {
-                    // Return the S3 URL where the image is stored
-                    return ResponseEntity.ok(image.getS3Url());
+                    // Return the json file of image, if needed, can change to only return the S3 Url where the image is stored
+                    return ResponseEntity.ok(image);
                 } else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
                 }
