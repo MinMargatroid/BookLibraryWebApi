@@ -5,6 +5,7 @@ import com.example.booklibrary.entities.Image;
 import com.example.booklibrary.exceptions.BookNotFoundException;
 import com.example.booklibrary.exceptions.ImageNotFoundException;
 import com.example.booklibrary.repository.BookRepository;
+import com.example.booklibrary.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,9 @@ import java.util.UUID;
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Autowired
     private ImageService imageService;
@@ -67,12 +71,15 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public void deleteBookImage(UUID bookId, UUID imageUuid) {
+    public void deleteBookImage(UUID bookId, String imageUuid) {
+        //System.out.println("**************");
         // Retrieve the book from the repository
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundException("No book found with ID: " + bookId));
 
-        List<UUID> imageUuids = book.getImageUuids();
+        List<String> imageUuids = book.getImageUuids();
+        //System.out.println("**************");
+        //System.out.println(imageUuid);
 
         String bucketName = "booklibraryimages";
         if (imageUuids.contains(imageUuid)) {
@@ -81,10 +88,11 @@ public class BookService {
             bookRepository.save(book);
 
             //need to add delete action in db
+            imageRepository.deleteById(imageUuid);
 
             // Delete the image from the S3 bucket, try use s3 url
-            s3Client.deleteObject(b -> b.bucket(bucketName).key(imageUuid.toString()));
-            System.out.println(imageUuid.toString());
+            s3Client.deleteObject(b -> b.bucket(bucketName).key(imageUuid));
+            //System.out.println(imageUuid.toString());
 
             System.out.println("Image deleted successfully: " + imageUuid);
         } else {

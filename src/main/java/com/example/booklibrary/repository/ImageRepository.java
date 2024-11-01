@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface ImageRepository extends JpaRepository<Image, UUID> {
-    Image findByUuid(UUID uuid);
+public interface ImageRepository extends JpaRepository<Image, String> {
+    Image findByUuid(String uuid);
 }

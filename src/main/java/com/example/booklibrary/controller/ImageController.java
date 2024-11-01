@@ -18,12 +18,12 @@ public class ImageController {
     private ImageService imageService;
 
     @GetMapping("/{image_uuid}")
-    public ResponseEntity<String> getImageByUuid(@PathVariable UUID image_uuid) {
+    public ResponseEntity<String> getImageByUuid(@PathVariable String image_uuid) {
         Image image = imageService.getImageByUuid(image_uuid);
-        System.out.println(image_uuid);
-        System.out.println("*************");
-        System.out.println(image_uuid.toString());
-        System.out.println("*************");
+        //System.out.println(image_uuid);
+        //System.out.println("*************");
+        //System.out.println(image_uuid.toString());
+        //System.out.println("*************");
         if (image != null) {
             // Return the S3 URL where the image is stored
             return ResponseEntity.ok(image.getS3Url());

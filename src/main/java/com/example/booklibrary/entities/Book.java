@@ -22,5 +22,5 @@ public class Book {
     @ElementCollection // Specifies that this is a collection of simple types
     @CollectionTable(name = "book_images", joinColumns = @JoinColumn(name = "book_id"))
     @Column(name = "image_uuid") // Column name for the UUIDs
-    private List<UUID> imageUuids;
+    private List<String> imageUuids;
 }

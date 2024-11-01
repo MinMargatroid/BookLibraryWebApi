@@ -24,11 +24,11 @@ public class ImageService {
     public Image uploadImage(MultipartFile file) throws IOException {
         // Generate a UUID for the image
         UUID uuid = UUID.randomUUID();
-        System.out.println(uuid);
+        //System.out.println(uuid);
 
         // Define S3 key (file name) for the uploaded image
         String key = uuid.toString();
-        System.out.println("uuid key:" + key);
+        //System.out.println("uuid key:" + key);
 
         // Upload the file to S3
         String bucketName = "booklibraryimages";
@@ -37,7 +37,7 @@ public class ImageService {
                 .key(key)
                 .contentType(file.getContentType())
                 .build();
-        System.out.println("40:::::::" + key);
+        //System.out.println("40:::::::" + key);
         s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
 
         // Build the S3 file URL (you may need to customize based on your S3 setup)
@@ -46,9 +46,9 @@ public class ImageService {
 
         // Save image metadata in the database
         Image image = new Image();
-        image.setUuid(uuid);
-        System.out.println("50::::::" + uuid);
-        image.setUuid_key(key);
+        image.setUuid(key);
+        //System.out.println("50::::::" + uuid);
+        //image.setUuid_key(key);
         image.setFileName(file.getOriginalFilename());
         image.setFileType(file.getContentType());
         image.setS3Url(s3Url);
@@ -56,7 +56,8 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public Image getImageByUuid(UUID uuid) {
+    public Image getImageByUuid(String uuid) {
+        //meed to verify book id
         return imageRepository.findByUuid(uuid);
     }
 }

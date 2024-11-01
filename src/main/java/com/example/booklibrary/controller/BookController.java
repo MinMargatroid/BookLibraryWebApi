@@ -51,7 +51,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{book_uuid}/images/{image_uuid}")
-    public ResponseEntity<String> deleteImage(@PathVariable UUID book_uuid, @PathVariable UUID image_uuid) {
+    public ResponseEntity<String> deleteImage(@PathVariable UUID book_uuid, @PathVariable String image_uuid) {
         bookService.deleteBookImage(book_uuid, image_uuid);
         return ResponseEntity.ok("Image deleted successfully");
     }
